@@ -32,7 +32,7 @@ local function codeium_to_item(comp, offset, right)
 		end
 	end
 
-	local end_offset = tonumber(comp.range and comp.range.endOffset)
+	local end_offset = tonumber(comp.range and (comp.range.endOffset or 0))
 	local suffix_diff
 	if end_offset then
 		suffix_diff = end_offset - max_offset
