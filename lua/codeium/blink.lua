@@ -25,7 +25,7 @@ local function codeium_to_item(comp, offset, right)
 	local max_offset = offset
 	if comp.completionParts then
 		for _, v in pairs(comp.completionParts) do
-			local part_offset = tonumber(v.offset)
+			local part_offset = tonumber(v.offset) or 0
 			if part_offset > max_offset then
 				max_offset = part_offset
 			end
@@ -57,11 +57,11 @@ local function codeium_to_item(comp, offset, right)
 	return {
 		label = display_label,
 		insertText = insert_text,
-		kind = require('blink.cmp.types').CompletionItemKind.Text,
+		kind = require("blink.cmp.types").CompletionItemKind.Text,
 		insertTextFormat = vim.lsp.protocol.InsertTextFormat.PlainText,
-		kind_name = 'Codeium',
-		kind_hl_group = 'BlinkCmpKindCopilot',
-		kind_icon = '󰘦',
+		kind_name = "Codeium",
+		kind_hl_group = "BlinkCmpKindCopilot",
+		kind_icon = "󰘦",
 		textEdit = {
 			newText = insert_text,
 			insert = range,
@@ -75,7 +75,7 @@ function M:resolve(item, callback)
 	item = vim.deepcopy(item)
 
 	item.documentation = {
-		kind = 'markdown',
+		kind = "markdown",
 		value = table.concat({
 			"```" .. vim.api.nvim_get_option_value("filetype", {}),
 			item.insertText,
