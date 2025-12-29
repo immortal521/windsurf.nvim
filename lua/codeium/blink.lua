@@ -25,15 +25,20 @@ local function codeium_to_item(comp, offset, right)
 	local max_offset = offset
 	if comp.completionParts then
 		for _, v in pairs(comp.completionParts) do
-			local part_offset = tonumber(v.offset) or 0
-			if part_offset > max_offset then
+			local part_offset = tonumber(v.offset)
+			if part_offset and part_offset > max_offset then
 				max_offset = part_offset
 			end
 		end
 	end
 
-	-- We get where the suffix difference between the completion and the range of code
-	local suffix_diff = comp.range.endOffset - max_offset
+	local end_offset = tonumber(comp.range and comp.range.endOffset)
+	local suffix_diff
+	if end_offset then
+		suffix_diff = end_offset - max_offset
+	else
+		suffix_diff = 0
+	end
 
 	local range = {
 		start = {
